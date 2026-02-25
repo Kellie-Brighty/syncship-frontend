@@ -17,6 +17,7 @@
 	import { doc, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 	import { db } from '$lib/firebase/client';
 	import { onDestroy } from 'svelte';
+	import confetti from 'canvas-confetti';
 
 	let site = $state<Site | null>(null);
 	let deployments = $state<Deployment[]>([]);
@@ -54,6 +55,37 @@
 	let unsubSite: (() => void) | null = null;
 	let unsubDeploys: (() => void) | null = null;
 
+	// Toast & celebration state
+	let showSuccessToast = $state(false);
+	let prevDeployStatuses = new Map<string, string>();
+
+	function celebrateDeployment() {
+		showSuccessToast = true;
+		const duration = 3000;
+		const end = Date.now() + duration;
+		const colors = ['#22c55e', '#3b82f6', '#a855f7', '#f59e0b', '#ef4444', '#ffffff'];
+		(function frame() {
+			confetti({
+				particleCount: 6,
+				angle: 60,
+				spread: 55,
+				origin: { x: 0 },
+				colors,
+				shapes: ['square', 'circle']
+			});
+			confetti({
+				particleCount: 6,
+				angle: 120,
+				spread: 55,
+				origin: { x: 1 },
+				colors,
+				shapes: ['square', 'circle']
+			});
+			if (Date.now() < end) requestAnimationFrame(frame);
+		})();
+		setTimeout(() => { showSuccessToast = false; }, 4000);
+	}
+
 	$effect(() => {
 		const user = $currentUser;
 		const id = $page.params.id;
@@ -67,6 +99,17 @@
 		);
 		if (activeDeploy) {
 			expandedDeployId = activeDeploy.id;
+		}
+	});
+
+	// Detect building → success transition and celebrate!
+	$effect(() => {
+		for (const deploy of deployments) {
+			const prev = prevDeployStatuses.get(deploy.id);
+			if (prev === 'building' && deploy.status === 'success') {
+				celebrateDeployment();
+			}
+			prevDeployStatuses.set(deploy.id, deploy.status);
 		}
 	});
 
@@ -233,7 +276,7 @@
 
 		deploying = true;
 		try {
-			await createDeployment({
+			const newDeployId = await createDeployment({
 				siteId: site.id,
 				siteName: site.name,
 				commit: 'manual',
@@ -244,6 +287,10 @@
 				triggeredBy: 'dashboard',
 				ownerId: user.uid
 			});
+
+			// Immediately expand the new deployment row — don't wait for onSnapshot
+			expandedDeployId = newDeployId;
+
 			await updateSite(site.id, { status: 'building' });
 			activeTab = 'deployments';
 		} catch (err) {
@@ -313,6 +360,13 @@
 	}
 	.custom-scrollbar::-webkit-scrollbar-thumb:hover {
 		background: rgba(255, 255, 255, 0.2);
+	}
+	.toast-enter {
+		animation: toast-slide-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+	}
+	@keyframes toast-slide-in {
+		from { opacity: 0; transform: translateY(1rem) scale(0.95); }
+		to   { opacity: 1; transform: translateY(0) scale(1); }
 	}
 </style>
 
@@ -594,17 +648,34 @@
 										</div>
 									{/if}
 									{#if deploy.buildLog}
-										<div class="rounded-md bg-gray-900 p-4 overflow-x-auto">
-											<pre class="text-xs font-mono text-gray-300 whitespace-pre-wrap">{deploy.buildLog}</pre>
-										</div>
-									{:else if deploy.status === 'building' || deploy.status === 'queued'}
-										<div class="flex items-center gap-2 text-sm text-gray-500">
-											<Loader class="h-3.5 w-3.5 animate-spin" />
-											Waiting for build output...
-										</div>
-									{:else}
-										<p class="text-sm text-gray-400">No build log available.</p>
-									{/if}
+							<div 
+								class="rounded-md bg-[#1e1e1e] p-4 overflow-x-auto overflow-y-auto relative max-h-[400px] border border-gray-800 shadow-inner custom-scrollbar"
+								bind:this={logContainer}
+							>
+								<div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-800/50 sticky top-0 bg-[#1e1e1e]/90 backdrop-blur-sm">
+									<div class="flex gap-1.5">
+										<div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+										<div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+										<div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+									</div>
+									<span class="text-[10px] font-mono text-gray-500 uppercase tracking-wider ml-2">Terminal Output</span>
+								</div>
+								<pre class="text-[13px] leading-relaxed font-mono text-gray-300 whitespace-pre-wrap font-medium">{@html parseLogColors(deploy.buildLog)}</pre>
+								{#if deploy.status === 'building' || deploy.status === 'queued'}
+									<div class="mt-4 flex items-center gap-2 text-xs text-yellow-500/90 font-mono animate-pulse bg-yellow-500/10 inline-flex px-2 py-1 rounded">
+										<Loader class="h-3 w-3 animate-spin" />
+										<span>Streaming live logs...</span>
+									</div>
+								{/if}
+							</div>
+						{:else if deploy.status === 'building' || deploy.status === 'queued'}
+							<div class="flex items-center gap-2 text-sm text-gray-500 p-3">
+								<Loader class="h-3.5 w-3.5 animate-spin" />
+								Waiting for build output...
+							</div>
+						{:else}
+							<p class="text-sm text-gray-400">No build log available.</p>
+						{/if}
 								</div>
 							{/if}
 						</div>
@@ -748,3 +819,18 @@
 		</Card>
 	{/if}
 {/if}
+
+{#if showSuccessToast}
+	<div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl bg-gray-900 border border-green-500/40 px-5 py-4 shadow-2xl shadow-green-500/10 toast-enter">
+		<div class="flex h-9 w-9 items-center justify-center rounded-full bg-green-500/20 ring-1 ring-green-500/40">
+			<svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+			</svg>
+		</div>
+		<div>
+			<p class="text-sm font-semibold text-white">Deployment Successful! 🎉</p>
+			<p class="text-xs text-gray-400 mt-0.5">Your site is live and up to date.</p>
+		</div>
+	</div>
+{/if}
+
