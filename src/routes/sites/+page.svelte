@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 	import AddSiteModal from '$lib/components/ui/AddSiteModal.svelte';
-	import { Globe, Plus, ExternalLink, GitBranch, Clock, CheckCircle, XCircle, Loader } from 'lucide-svelte';
+	import { Globe, Plus, ExternalLink, GitBranch, Clock, CheckCircle, XCircle, Loader, Search } from 'lucide-svelte';
 	import { currentUser } from '$lib/stores/auth';
 	import { getSites } from '$lib/firebase/services/sites';
 	import type { Site } from '$lib/types/models';
@@ -10,6 +11,15 @@
 	let sites = $state<Site[]>([]);
 	let loading = $state(true);
 	let showAddSite = $state(false);
+	
+	let searchQuery = $state('');
+	let filteredSites = $derived(
+		sites.filter(s => 
+			s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			s.domain.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			s.repo.toLowerCase().includes(searchQuery.toLowerCase())
+		)
+	);
 
 	$effect(() => {
 		const user = $currentUser;
@@ -62,6 +72,22 @@
 	</div>
 </div>
 
+<div class="mb-6 max-w-md">
+	<div class="relative">
+		<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+			<Search class="h-4 w-4 text-gray-400" />
+		</div>
+		<Input
+			type="search"
+			name="search"
+			id="search"
+			class="pl-10 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+			placeholder="Search by name, domain, or repo..."
+			bind:value={searchQuery}
+		/>
+	</div>
+</div>
+
 {#if loading}
 	<div class="grid gap-3">
 		{#each [1, 2, 3] as _}
@@ -82,9 +108,15 @@
 			<Button variant="outline" onclick={() => showAddSite = true}>Add Your First Site</Button>
 		</div>
 	</Card>
+{:else if filteredSites.length === 0}
+	<Card class="p-8 text-center">
+		<Search class="mx-auto h-10 w-10 text-gray-300" />
+		<h3 class="mt-2 text-sm font-semibold text-gray-900">No matches found</h3>
+		<p class="mt-1 text-sm text-gray-500">We couldn't find any sites matching "{searchQuery}".</p>
+	</Card>
 {:else}
 	<div class="grid gap-3">
-		{#each sites as site}
+		{#each filteredSites as site}
 			{@const config = statusConfig[site.status] ?? statusConfig['pending']}
 			<Card class="flex items-center justify-between p-4 hover:border-gray-300 transition-colors">
 				<div class="flex items-center gap-3">
