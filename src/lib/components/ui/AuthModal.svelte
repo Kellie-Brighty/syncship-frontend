@@ -35,7 +35,7 @@
 			show = false;
 			goto('/dashboard'); 
 		} catch (err: any) { 
-			error = err.message?.replace('Firebase: ', '') || 'Something went wrong'; 
+			error = err.message?.replace('Firebase: ', '') || 'Something went wronggg'; 
 		} finally { 
 			loading = false; 
 		}
