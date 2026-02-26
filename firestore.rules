@@ -40,6 +40,12 @@ service cloud.firestore {
       allow read: if isAuth();
       allow write: if false; // Only daemon (admin SDK) can write
     }
+    
+    // Daemon status and commands
+    match /daemon/{docId} {
+      allow read: if isAuth();
+      allow write: if isAuth() && docId == 'commands';
+    }
 
     // Deny everything else by default
     match /{document=**} {
