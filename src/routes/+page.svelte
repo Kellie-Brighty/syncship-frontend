@@ -363,9 +363,9 @@
 		</div>
 		<div class="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
 			<p class="text-xs text-gray-400">© 2026 SyncShip. Built with ♥ for agencies.</p>
-			<div class="flex items-center gap-6">
-				<a href="/privacy" class="text-xs text-gray-400 hover:text-gray-700 transition-colors">Privacy Policy</a>
-				<a href="/terms" class="text-xs text-gray-400 hover:text-gray-700 transition-colors">Terms & Conditions</a>
+			<div class="flex items-center gap-8">
+				<a href="/privacy" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-gray-400">Privacy Policy</a>
+				<a href="/terms" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-gray-400">Terms & Conditions</a>
 			</div>
 		</div>
 	</div>
