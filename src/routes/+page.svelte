@@ -176,52 +176,8 @@
 	</div>
 </section>
 
-<!-- ─── COMPARISON ───────────────────────────────────────────── -->
-<section class="py-28 bg-gray-50/50">
-	<div class="mx-auto max-w-5xl px-6">
-		<div class="text-center mb-16 reveal fade-up">
-			<h2 class="text-3xl font-black text-gray-900 tracking-tight">The Freedom Comparison</h2>
-			<p class="mt-4 text-gray-500">Why thousands are coming back to their own servers.</p>
-		</div>
-
-		<div class="reveal fade-up overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
-			<table class="w-full text-left border-collapse min-w-[600px] sm:min-w-0">
-				<thead>
-					<tr class="bg-gray-50/80">
-						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100">feature</th>
-						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100">Standard Cloud</th>
-						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-indigo-600 border-b border-gray-100">SyncShip (BYOS)</th>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-gray-100">
-					<tr>
-						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Cost Structure</td>
-						<td class="px-6 py-4 text-sm text-gray-500">Per-user / Per-site / Overage fees</td>
-						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Flat server fee (~$5/mo)</td>
-					</tr>
-					<tr>
-						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Data Ownership</td>
-						<td class="px-6 py-4 text-sm text-gray-500">Hosted in their ecosystem</td>
-						<td class="px-6 py-4 text-sm text-gray-900 font-medium">100% Your Infrastructure</td>
-					</tr>
-					<tr>
-						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Backend Support</td>
-						<td class="px-6 py-4 text-sm text-gray-500">Serverless cold-starts & limits</td>
-						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Persistent PM2 processes</td>
-					</tr>
-					<tr>
-						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Environment</td>
-						<td class="px-6 py-4 text-sm text-gray-500">Proprietary "Edge" runtime</td>
-						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Full Linux control</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</section>
-
 <!-- ─── HOW IT WORKS ──────────────────────────────────────────── -->
-<section id="how-it-works" class="py-28 lg:py-32 bg-white overflow-hidden border-y border-gray-100/70">
+<section id="how-it-works" class="py-28 lg:py-32 bg-gray-50/50 overflow-hidden border-y border-gray-100/70">
 	<div class="mx-auto max-w-5xl px-6">
 		<div class="text-center max-w-2xl mx-auto mb-20 reveal fade-up">
 			<p class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">How It Works</p>
@@ -327,6 +283,50 @@
 				</div>
 			</div>
 
+		</div>
+	</div>
+</section>
+
+<!-- ─── COMPARISON ───────────────────────────────────────────── -->
+<section class="py-28 bg-white">
+	<div class="mx-auto max-w-5xl px-6">
+		<div class="text-center mb-16 reveal fade-up">
+			<h2 class="text-3xl font-black text-gray-900 tracking-tight">The Freedom Comparison</h2>
+			<p class="mt-4 text-gray-500">Why thousands are coming back to their own servers.</p>
+		</div>
+
+		<div class="reveal fade-up overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+			<table class="w-full text-left border-collapse min-w-[600px] sm:min-w-0">
+				<thead>
+					<tr class="bg-gray-50/80">
+						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100">feature</th>
+						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100">Standard Cloud</th>
+						<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-indigo-600 border-b border-gray-100">SyncShip (BYOS)</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-100">
+					<tr>
+						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Cost Structure</td>
+						<td class="px-6 py-4 text-sm text-gray-500">Per-user / Per-site / Overage fees</td>
+						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Flat server fee (~$5/mo)</td>
+					</tr>
+					<tr>
+						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Data Ownership</td>
+						<td class="px-6 py-4 text-sm text-gray-500">Hosted in their ecosystem</td>
+						<td class="px-6 py-4 text-sm text-gray-900 font-medium">100% Your Infrastructure</td>
+					</tr>
+					<tr>
+						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Backend Support</td>
+						<td class="px-6 py-4 text-sm text-gray-500">Serverless cold-starts & limits</td>
+						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Persistent PM2 processes</td>
+					</tr>
+					<tr>
+						<td class="px-6 py-4 text-sm font-semibold text-gray-900">Environment</td>
+						<td class="px-6 py-4 text-sm text-gray-500">Proprietary "Edge" runtime</td>
+						<td class="px-6 py-4 text-sm text-gray-900 font-medium">Full Linux control</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </section>
