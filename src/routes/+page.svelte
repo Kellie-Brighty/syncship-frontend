@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Droplets, Rocket, Shield, Globe, GitBranch, Activity, Terminal, ChevronRight, Check } from 'lucide-svelte';
+	import { Droplets, Rocket, Shield, Globe, GitBranch, Activity, Terminal, ChevronRight, Check, Server, Key } from 'lucide-svelte';
 	import AuthModal from '$lib/components/ui/AuthModal.svelte';
 	import { currentUser } from '$lib/stores/auth';
 
@@ -221,29 +221,112 @@
 </section>
 
 <!-- ─── HOW IT WORKS ──────────────────────────────────────────── -->
-<section id="how-it-works" class="py-28 border-y border-gray-100/70">
-	<div class="mx-auto max-w-4xl px-6 text-center">
-		<div class="reveal fade-up mb-16">
-			<p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">How It Works</p>
-			<h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">Up and running in minutes.</h2>
-			<p class="text-gray-500 max-w-md mx-auto">No DevOps degree. No YAML nightmares. Just a form, your repo, and one button.</p>
+<section id="how-it-works" class="py-28 lg:py-32 bg-white overflow-hidden border-y border-gray-100/70">
+	<div class="mx-auto max-w-5xl px-6">
+		<div class="text-center max-w-2xl mx-auto mb-20 reveal fade-up">
+			<p class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">How It Works</p>
+			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-4">From zero to deployed in 4 steps.</h2>
+			<p class="text-gray-500 text-lg">You bring the server, we bring the magic. Here is exactly how you deploy your first project with SyncShip.</p>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-			{#each [
-				{ step: '01', title: 'Connect Your Droplet', desc: 'Run the one-line daemon installer on your Ubuntu server. Done in under a minute.' },
-				{ step: '02', title: 'Add Your Site', desc: 'Paste your GitHub repo URL, custom domain, and build command. Environment variables stored securely.' },
-				{ step: '03', title: 'Hit Deploy', desc: 'SyncShip clones your repo, builds it, configures Nginx, provisions SSL, and makes it live — while you watch.' }
-			] as item, i}
-				<div class="reveal fade-up rounded-2xl border border-gray-200/80 bg-gray-50/80 p-6 shadow-sm" style="animation-delay: {i * 100}ms">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="font-mono text-xs font-black text-gray-400">{item.step}</span>
-						<div class="h-px flex-1 bg-gray-200"></div>
-					</div>
-					<h3 class="font-bold text-gray-900 mb-2">{item.title}</h3>
-					<p class="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+		<div class="relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
+			
+			<!-- Step 1 -->
+			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
+				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+					<Server class="text-indigo-600 w-5 h-5"/>
 				</div>
-			{/each}
+				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 1</span>
+						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Get a VPS</h3>
+					</div>
+					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">You'll need a clean Ubuntu 20.04+ server to host your apps. A simple $4/month droplet from providers like DigitalOcean, Hetzner, or AWS works perfectly for most starter projects.</p>
+					<div class="rounded-xl border border-gray-100 bg-gray-50 p-4 flex flex-wrap items-center gap-4">
+						<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/DigitalOcean_logo.svg" alt="DigitalOcean" class="h-5 sm:h-6 opacity-60 grayscale hover:grayscale-0 transition-all"/>
+						<span class="w-px h-6 bg-gray-200 hidden sm:block"></span>
+						<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="h-5 sm:h-6 opacity-60 grayscale hover:grayscale-0 transition-all"/>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 2 -->
+			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
+				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+					<Key class="text-indigo-600 w-5 h-5"/>
+				</div>
+				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 2</span>
+						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Generate Server Key</h3>
+					</div>
+					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">Once you create a free SyncShip account, head over to your settings dashboard. Click "Generate API Token" to create a secure key that will bind your server to our platform.</p>
+					<div class="rounded-xl border border-gray-100 bg-gray-50 p-3 sm:p-4">
+						<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm gap-3 sm:gap-0">
+							<div class="flex items-center gap-2">
+								<Key class="w-4 h-4 text-gray-400"/>
+								<span class="text-xs sm:text-sm font-mono text-gray-600">sync_sec_9x8f...</span>
+							</div>
+							<button class="w-full sm:w-auto text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-md hover:bg-indigo-100 transition-colors">Generate Token</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 3 -->
+			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
+				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+					<Terminal class="text-indigo-600 w-5 h-5"/>
+				</div>
+				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 3</span>
+						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Install the Daemon</h3>
+					</div>
+					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">SSH into your newly created VPS and paste our one-line installer. It authenticates with your key, installs Nginx and Node, and securely connects back to SyncShip instantly.</p>
+					<div class="bg-gray-950 rounded-xl p-3 sm:p-4 overflow-hidden shadow-inner hidden xs:block">
+						<div class="flex items-center gap-1.5 mb-3">
+							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-red-500/80"></div>
+							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-yellow-500/80"></div>
+							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-green-500/80"></div>
+							<span class="text-[8px] sm:text-[10px] text-gray-500 font-mono ml-2 uppercase tracking-wider">root@ubuntu:~</span>
+						</div>
+						<code class="text-[10px] sm:text-xs text-blue-400 font-mono flex opacity-90 leading-relaxed break-all">
+							<span class="text-gray-500 mr-2 select-none">$</span>
+							curl -s https://syncship.ink/install.sh | bash
+						</code>
+						<code class="text-[10px] sm:text-xs text-green-400 font-mono flex flex-wrap opacity-90 leading-relaxed mt-2 sm:mt-3 break-words">
+							→ SyncShip Daemon securely connected!
+						</code>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 4 -->
+			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
+				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+					<Rocket class="text-indigo-600 w-5 h-5"/>
+				</div>
+				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 4</span>
+						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Deploy!</h3>
+					</div>
+					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">Your dashboard will show your server as "Online". Now, just paste your GitHub repo URL and click deploy. We'll pull your code, build it, and assign SSL magic. You're live!</p>
+					<div class="rounded-xl border border-gray-100 bg-gray-50 p-2 overflow-hidden">
+						<div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm">
+							<div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
+								<span class="text-xs sm:text-sm font-bold text-gray-900">New Project</span>
+								<span class="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Online</span>
+							</div>
+							<button class="w-full bg-gray-900 hover:bg-gray-800 transition-colors text-white text-[11px] sm:text-sm font-bold py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-2">
+								<Rocket class="w-3.5 h-3.5"/> Deploy to Production
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </section>
