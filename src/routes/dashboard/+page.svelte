@@ -10,7 +10,7 @@
 	import type { Deployment } from '$lib/types/models';
 	import type { ServerStats } from '$lib/types/models';
 	import { db } from '$lib/firebase/client';
-	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+	import { doc, onSnapshot, updateDoc, setDoc } from 'firebase/firestore';
 	import ConfirmationModal from '$lib/components/ui/ConfirmationModal.svelte';
 
 	const LATEST_DAEMON_VERSION = '0.1.0'; // Hardcoded for now
@@ -130,12 +130,13 @@
 		
 		selfUpdateStarted = true;
 		try {
-			await updateDoc(doc(db, 'daemon', $currentUser.uid), {
+			await setDoc(doc(db, 'daemon', $currentUser.uid), {
 				action: 'self_update'
-			});
+			}, { merge: true });
 			showUpdateModal = false;
-		} catch (err) {
+		} catch (err: any) {
 			console.error('Failed to trigger self-update:', err);
+			alert('Failed to trigger update: ' + err.message);
 		} finally {
 			selfUpdateStarted = false;
 		}
