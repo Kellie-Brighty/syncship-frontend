@@ -22,7 +22,6 @@
 	let loading = $state(true);
 	let checkingUpdate = $state(false);
 	let daemonInfo = $state<any>(null);
-	let updateAvailable = $derived(daemonInfo?.version && daemonInfo.version !== LATEST_DAEMON_VERSION);
 
 	// Modal States
 	let showUpdateModal = $state(false);
@@ -38,6 +37,11 @@
 			const unsub = onSnapshot(doc(db, 'daemon', user.uid), (snap) => {
 				if (snap.exists()) {
 					daemonInfo = snap.data();
+					console.log('📊 Daemon Version Info:', {
+						reportedVersion: daemonInfo.version,
+						latestExpected: LATEST_DAEMON_VERSION,
+						isMatch: daemonInfo.version === LATEST_DAEMON_VERSION
+					});
 				}
 			});
 			return unsub;
@@ -45,6 +49,10 @@
 	});
 
 	import { onDestroy } from 'svelte';
+	let updateAvailable = $derived(
+		daemonInfo?.version && 
+		daemonInfo.version.toString().trim() !== LATEST_DAEMON_VERSION.trim()
+	);
 	let unsubscribeStats: (() => void) | null = null;
 
 	async function loadData(uid: string) {
@@ -208,6 +216,7 @@
 	message="SyncShip is running the latest version (v{daemonInfo?.version || 'unknown'}). No updates needed."
 	confirmText="Awesome"
 	type="success"
+	hideCancel={true}
 	onConfirm={() => showUpToDateModal = false}
 	onCancel={() => showUpToDateModal = false}
 />
