@@ -26,6 +26,7 @@
 	// Modal States
 	let showUpdateModal = $state(false);
 	let showUpToDateModal = $state(false);
+	let showLegacyUpdateModal = $state(false);
 	let selfUpdateStarted = $state(false);
 
 	$effect(() => {
@@ -122,7 +123,11 @@
 
 	async function confirmSelfUpdate() {
 		if (!$currentUser) return;
-		showUpdateModal = true;
+		if (!daemonInfo?.version || daemonInfo.version === '0.0.1') {
+			showLegacyUpdateModal = true;
+		} else {
+			showUpdateModal = true;
+		}
 	}
 
 	async function startSelfUpdate() {
@@ -224,6 +229,20 @@
 	hideCancel={true}
 	onConfirm={() => showUpToDateModal = false}
 	onCancel={() => showUpToDateModal = false}
+/>
+
+<ConfirmationModal 
+	bind:show={showLegacyUpdateModal}
+	title="Manual Upgrade Required"
+	message="Your server is running a legacy version of SyncShip that doesn't support One-Click Updates yet. Please go to Settings and run the Installation Command one more time to upgrade to v0.1.0."
+	confirmText="Go to Settings"
+	cancelText="Cancel"
+	type="info"
+	onConfirm={() => {
+		showLegacyUpdateModal = false;
+		window.location.href = '/settings';
+	}}
+	onCancel={() => showLegacyUpdateModal = false}
 />
 
 {#if daemonInfo?.action === 'error'}
