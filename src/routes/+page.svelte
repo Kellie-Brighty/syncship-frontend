@@ -36,6 +36,9 @@
 		authMode = mode;
 		showAuthModal = true;
 	}
+
+	// ── How It Works State ─────────────────────────────────────
+	let activeHowItWorksTab = $state(0);
 </script>
 
 <svelte:head>
@@ -176,113 +179,200 @@
 	</div>
 </section>
 
-<!-- ─── HOW IT WORKS ──────────────────────────────────────────── -->
+<!-- ─── HOW IT WORKS (COMMAND CENTER) ─────────────────────────── -->
 <section id="how-it-works" class="py-28 lg:py-32 bg-gray-50/50 overflow-hidden border-y border-gray-100/70">
-	<div class="mx-auto max-w-5xl px-6">
-		<div class="text-center max-w-2xl mx-auto mb-20 reveal fade-up">
+	<div class="mx-auto max-w-6xl px-6">
+		<div class="text-center max-w-2xl mx-auto mb-16 sm:mb-20 reveal fade-up">
 			<p class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">How It Works</p>
 			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-4">From zero to deployed in 4 steps.</h2>
 			<p class="text-gray-500 text-lg">You bring the server, we bring the magic. Here is exactly how you deploy your first project with SyncShip.</p>
 		</div>
 
-		<div class="relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
-			
-			<!-- Step 1 -->
-			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
-				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-					<Server class="text-indigo-600 w-5 h-5"/>
-				</div>
-				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 1</span>
-						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Get a VPS</h3>
-					</div>
-					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">You'll need a clean Ubuntu 20.04+ server to host your apps. A simple $4/month droplet from providers like DigitalOcean, Hetzner, or AWS works perfectly for most starter projects.</p>
-					<div class="rounded-xl border border-gray-100 bg-gray-50 p-4 flex flex-wrap items-center gap-4">
-						<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/DigitalOcean_logo.svg" alt="DigitalOcean" class="h-5 sm:h-6 opacity-60 grayscale hover:grayscale-0 transition-all"/>
-						<span class="w-px h-6 bg-gray-200 hidden sm:block"></span>
-						<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="h-5 sm:h-6 opacity-60 grayscale hover:grayscale-0 transition-all"/>
-					</div>
-				</div>
-			</div>
-
-			<!-- Step 2 -->
-			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
-				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-					<Key class="text-indigo-600 w-5 h-5"/>
-				</div>
-				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 2</span>
-						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Generate Server Key</h3>
-					</div>
-					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">Once you create a free SyncShip account, head over to your settings dashboard. Click "Generate API Token" to create a secure key that will bind your server to our platform.</p>
-					<div class="rounded-xl border border-gray-100 bg-gray-50 p-3 sm:p-4">
-						<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm gap-3 sm:gap-0">
-							<div class="flex items-center gap-2">
-								<Key class="w-4 h-4 text-gray-400"/>
-								<span class="text-xs sm:text-sm font-mono text-gray-600">sync_sec_9x8f...</span>
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+			<!-- Controls (Left) -->
+			<div class="lg:col-span-5 flex flex-col gap-4 relative z-10 reveal fade-up">
+				{#each [
+					{ icon: Server, title: 'Get a VPS', desc: "You'll need a clean Ubuntu 20.04+ server. A simple $4/month droplet from providers like DigitalOcean or Hetzner works perfectly." },
+					{ icon: Key, title: 'Generate Server Key', desc: 'Head over to your SyncShip settings dashboard. Click "Generate API Token" to create a secure key.' },
+					{ icon: Terminal, title: 'Install the Daemon', desc: 'SSH into your VPS and paste our one-line installer. It authenticates with your key and securely connects.' },
+					{ icon: Rocket, title: 'Deploy!', desc: 'Your dashboard will show your server as "Online". Now, just paste your GitHub repo URL and click deploy.' }
+				] as tab, idx}
+					<button 
+						class="text-left w-full group relative rounded-2xl p-5 sm:p-6 transition-all duration-300 {activeHowItWorksTab === idx ? 'bg-white shadow-xl ring-1 ring-gray-900/5' : 'hover:bg-gray-100/50'}"
+						onclick={() => activeHowItWorksTab = idx}
+					>
+						<!-- Active state indicator bar -->
+						<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-12 bg-indigo-600 rounded-r-full transition-all duration-300 {activeHowItWorksTab === idx ? 'opacity-100' : 'opacity-0'}"></div>
+						
+						<div class="flex items-start gap-4">
+							<div class="shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl transition-all duration-300 {activeHowItWorksTab === idx ? 'bg-indigo-600 shadow-md shadow-indigo-600/20' : 'bg-gray-200 group-hover:bg-gray-300'}">
+								<tab.icon class="w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-300 {activeHowItWorksTab === idx ? 'text-white' : 'text-gray-600'}" />
 							</div>
-							<button class="w-full sm:w-auto text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-md hover:bg-indigo-100 transition-colors">Generate Token</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Step 3 -->
-			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
-				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-					<Terminal class="text-indigo-600 w-5 h-5"/>
-				</div>
-				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 3</span>
-						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Install the Daemon</h3>
-					</div>
-					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">SSH into your newly created VPS and paste our one-line installer. It authenticates with your key, installs Nginx and Node, and securely connects back to SyncShip instantly.</p>
-					<div class="bg-gray-950 rounded-xl p-3 sm:p-4 overflow-hidden shadow-inner hidden xs:block">
-						<div class="flex items-center gap-1.5 mb-3">
-							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-red-500/80"></div>
-							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-yellow-500/80"></div>
-							<div class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-green-500/80"></div>
-							<span class="text-[8px] sm:text-[10px] text-gray-500 font-mono ml-2 uppercase tracking-wider">root@ubuntu:~</span>
-						</div>
-						<code class="text-[10px] sm:text-xs text-blue-400 font-mono flex opacity-90 leading-relaxed break-all">
-							<span class="text-gray-500 mr-2 select-none">$</span>
-							curl -s https://syncship.ink/install.sh | bash
-						</code>
-						<code class="text-[10px] sm:text-xs text-green-400 font-mono flex flex-wrap opacity-90 leading-relaxed mt-2 sm:mt-3 break-words">
-							→ SyncShip Daemon securely connected!
-						</code>
-					</div>
-				</div>
-			</div>
-
-			<!-- Step 4 -->
-			<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-12 last:mb-0 reveal fade-up">
-				<div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-					<Rocket class="text-indigo-600 w-5 h-5"/>
-				</div>
-				<div class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full whitespace-nowrap">Step 4</span>
-						<h3 class="font-bold text-gray-900 text-lg sm:text-xl">Deploy!</h3>
-					</div>
-					<p class="text-sm sm:text-base text-gray-500 leading-relaxed mb-6">Your dashboard will show your server as "Online". Now, just paste your GitHub repo URL and click deploy. We'll pull your code, build it, and assign SSL magic. You're live!</p>
-					<div class="rounded-xl border border-gray-100 bg-gray-50 p-2 overflow-hidden">
-						<div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm">
-							<div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
-								<span class="text-xs sm:text-sm font-bold text-gray-900">New Project</span>
-								<span class="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Online</span>
+							<div>
+								<div class="flex items-center gap-2 mb-1.5">
+									<span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors duration-300 {activeHowItWorksTab === idx ? 'text-indigo-600' : 'text-gray-400'}">Step {idx + 1}</span>
+								</div>
+								<h3 class="font-bold text-gray-900 text-base sm:text-lg mb-2">{tab.title}</h3>
+								<!-- Description only shows when active -->
+								<div class="overflow-hidden transition-all duration-500 {activeHowItWorksTab === idx ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}">
+									<p class="text-sm text-gray-500 leading-relaxed">{tab.desc}</p>
+								</div>
 							</div>
-							<button class="w-full bg-gray-900 hover:bg-gray-800 transition-colors text-white text-[11px] sm:text-sm font-bold py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-2">
-								<Rocket class="w-3.5 h-3.5"/> Deploy to Production
-							</button>
 						</div>
-					</div>
-				</div>
+					</button>
+				{/each}
 			</div>
 
+			<!-- Viewport (Right) -->
+			<div class="lg:col-span-7 relative h-[400px] sm:h-[450px] lg:h-[500px] w-full reveal fade-up delay-100">
+				<div class="absolute inset-0 bg-white rounded-3xl shadow-2xl ring-1 ring-gray-900/5 overflow-hidden flex flex-col">
+					<!-- Fake Window Chrome -->
+					<div class="h-10 sm:h-12 bg-gray-50/80 backdrop-blur-sm border-b border-gray-200/50 flex items-center px-4 gap-2 relative z-20 shrink-0">
+						<div class="flex gap-1.5 sm:gap-2 border-r border-gray-200/50 pr-4">
+							<div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-400"></div>
+							<div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-400"></div>
+							<div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-400"></div>
+						</div>
+						<div class="flex-1 flex justify-center">
+							<div class="bg-gray-200/50 text-gray-500 text-[10px] sm:text-xs font-medium px-4 py-1 sm:py-1.5 rounded-md flex items-center gap-2">
+								<Shield class="w-3 h-3"/> syncship.ink
+							</div>
+						</div>
+					</div>
+
+					<!-- Viewport Content Area -->
+					<div class="relative flex-1 bg-gray-50/30 w-full h-full overflow-hidden">
+						
+						<!-- Step 1: VPS -->
+						<div class="absolute inset-0 flex items-center justify-center p-6 sm:p-12 transition-all duration-500 {activeHowItWorksTab === 0 ? 'opacity-100 translate-y-0 translate-x-0 z-10' : 'opacity-0 scale-95 pointer-events-none z-0'}">
+							<div class="w-full max-w-sm">
+								<div class="relative group">
+									<div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+									<div class="relative bg-white ring-1 ring-gray-200 rounded-xl p-6 shadow-xl text-center">
+										<div class="w-16 h-16 mx-auto bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6 ring-4 ring-blue-50/50">
+											<Server class="w-8 h-8"/>
+										</div>
+										<h4 class="font-bold text-gray-900 text-lg mb-2">Ubuntu 20.04+</h4>
+										<p class="text-sm text-gray-500 mb-6 font-mono bg-gray-50 py-1.5 rounded-md border border-gray-100">root@192.168.1.1</p>
+										<div class="flex justify-center gap-3">
+											<div class="bg-gray-50 border border-gray-100 rounded-lg p-3 flex-1 flex items-center justify-center opacity-70 grayscale hover:grayscale-0 transition-all cursor-pointer">
+												<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/DigitalOcean_logo.svg" alt="DO" class="h-4"/>
+											</div>
+											<div class="bg-gray-50 border border-gray-100 rounded-lg p-3 flex-1 flex items-center justify-center opacity-70 grayscale hover:grayscale-0 transition-all cursor-pointer">
+												<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="h-4"/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Step 2: Key -->
+						<div class="absolute inset-0 flex items-center justify-center p-4 sm:p-8 transition-all duration-500 {activeHowItWorksTab === 1 ? 'opacity-100 translate-y-0 z-10' : 'opacity-0 translate-y-8 pointer-events-none z-0'}">
+							<div class="w-full h-full bg-white rounded-xl shadow-xl ring-1 ring-gray-200 overflow-hidden flex flex-col">
+								<div class="border-b border-gray-100 p-4 shrink-0 flex items-center gap-3">
+									<div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center"><Key class="w-4 h-4 text-indigo-600"/></div>
+									<div>
+										<h4 class="font-bold text-gray-900 text-sm">Security & API</h4>
+										<p class="text-[10px] text-gray-500">Manage your server authentication.</p>
+									</div>
+								</div>
+								<div class="p-6 flex-1 flex flex-col justify-center bg-gray-50">
+									<label class="block text-xs font-bold text-gray-700 mb-2">Daemon Token (SYNC_DAEMON_TOKEN)</label>
+									<div class="relative group cursor-pointer">
+										<div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+										<div class="relative bg-gray-900 rounded-md p-4 flex items-center justify-between">
+											<span class="font-mono text-xs sm:text-sm text-green-400">sync_sec_9x8f2a1b7c...</span>
+											<span class="bg-white/10 text-white text-[10px] uppercase font-bold px-2 py-1 rounded">Copy</span>
+										</div>
+									</div>
+									<p class="text-[10px] text-gray-500 mt-3 text-center">Never share this key. It grants full access to your server.</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- Step 3: Terminal -->
+						<div class="absolute inset-0 bg-gray-950 p-4 sm:p-6 transition-all duration-500 {activeHowItWorksTab === 2 ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}">
+							<div class="w-full text-left font-mono">
+								<div class="flex items-center gap-2 mb-4 opacity-50">
+									<span class="text-xs text-blue-400">root@ubuntu</span>
+									<span class="text-xs text-gray-400">~</span>
+									<span class="text-xs text-white">$</span>
+								</div>
+								
+								<div class="overflow-hidden whitespace-nowrap border-r-2 border-transparent" style="width: fit-content; max-width: 100%;">
+									<code class="text-[10px] sm:text-xs text-green-400 leading-relaxed font-mono block">
+										export SYNC_DAEMON_TOKEN="sync_sec_..."
+									</code>
+									<code class="text-[10px] sm:text-xs text-gray-300 leading-relaxed font-mono block mt-2">
+										curl -s https://syncship.ink/install.sh | bash
+									</code>
+								</div>
+
+								<div class="mt-6 space-y-2 {activeHowItWorksTab === 2 ? 'opacity-100 transition-opacity duration-1000 delay-500' : 'opacity-0'}">
+									<code class="text-[10px] sm:text-xs text-gray-500 font-mono block">→ Installing Node.js & PM2... OK</code>
+									<code class="text-[10px] sm:text-xs text-gray-500 font-mono block">→ Installing Nginx & Certbot... OK</code>
+									<code class="text-[10px] sm:text-xs text-blue-400 font-mono block">→ Starting SyncShip Daemon...</code>
+									<div class="flex items-center gap-2 mt-4 bg-green-500/10 border border-green-500/20 p-3 rounded-md">
+										<Check class="w-4 h-4 text-green-400 shrink-0"/>
+										<code class="text-[10px] sm:text-xs text-green-400 font-mono font-bold block">Daemon securely connected and ready!</code>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Step 4: Deploy -->
+						<div class="absolute inset-0 flex justify-center items-end sm:items-center overflow-hidden transition-all duration-500 {activeHowItWorksTab === 3 ? 'opacity-100 translate-y-0 z-10' : 'opacity-0 translate-y-12 pointer-events-none z-0'}">
+							
+							<div class="bg-white w-full sm:w-[90%] sm:rounded-xl shadow-2xl ring-1 ring-gray-200 border-b-0 sm:border-b">
+								<div class="border-b border-gray-100 p-4 flex items-center justify-between">
+									<div class="flex items-center gap-2">
+										<Globe class="w-4 h-4 text-gray-400"/>
+										<h4 class="font-bold text-gray-900 text-sm">Add New Site</h4>
+									</div>
+									<span class="flex items-center gap-1.5 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded border border-green-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Server Online
+									</span>
+								</div>
+								<div class="p-6 space-y-4 bg-gray-50/50">
+									<div>
+										<label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1.5">GitHub Repository</label>
+										<div class="bg-white border text-xs border-indigo-200 ring-2 ring-indigo-50/50 rounded-md p-2.5 text-gray-900 font-mono flex items-center">
+											https://github.com/agency/frontend
+										</div>
+									</div>
+									<div class="grid grid-cols-2 gap-4">
+										<div>
+											<label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1.5">Framework</label>
+											<div class="bg-white border text-[10px] sm:text-xs border-gray-200 rounded-md p-2 sm:p-2.5 text-gray-900 flex items-center gap-2">
+												<div class="w-4 h-4 rounded bg-orange-500 flex items-center justify-center text-[8px] text-white font-bold">S</div> SvelteKit
+											</div>
+										</div>
+										<div>
+											<label class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1.5">Domain</label>
+											<div class="bg-white border text-[10px] sm:text-xs border-gray-200 rounded-md p-2 sm:p-2.5 text-gray-900">
+												app.client.com
+											</div>
+										</div>
+									</div>
+
+									<div class="pt-2">
+										<button class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 sm:py-3 rounded-lg flex items-center justify-center gap-2 transition duration-300">
+											<Rocket class="w-4 h-4"/> 
+											<span class="text-xs sm:text-sm">Deploy to Production</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<!-- Decorative elements around viewport -->
+				<div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+				<div class="absolute -left-6 -top-6 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+			</div>
 		</div>
 	</div>
 </section>
