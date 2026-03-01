@@ -50,8 +50,8 @@
 
 	import { onDestroy } from 'svelte';
 	let updateAvailable = $derived(
-		daemonInfo?.version && 
-		daemonInfo.version.toString().trim() !== LATEST_DAEMON_VERSION.trim()
+		daemonInfo && 
+		(!daemonInfo.version || daemonInfo.version.toString().trim() !== LATEST_DAEMON_VERSION.trim())
 	);
 	let unsubscribeStats: (() => void) | null = null;
 
@@ -106,8 +106,12 @@
 			// Wait a bit for the daemon to respond
 			setTimeout(() => {
 				checkingUpdate = false;
-				if (!updateAvailable) {
+				if (!daemonInfo) {
+					alert("No server connected. Please go to Settings to install the SyncShip daemon on your VPS.");
+				} else if (!updateAvailable) {
 					showUpToDateModal = true;
+				} else {
+					showUpdateModal = true;
 				}
 			}, 2000);
 		} catch (err) {
