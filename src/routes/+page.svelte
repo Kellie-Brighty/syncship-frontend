@@ -60,6 +60,7 @@
 			<nav class="hidden md:flex items-center gap-8">
 				<a href="#features"     onclick={smoothTo('features')}     class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Features</a>
 				<a href="#how-it-works" onclick={smoothTo('how-it-works')} class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">How it works</a>
+				<a href="/docs"         class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Docs</a>
 				<a href="#pricing"      onclick={smoothTo('pricing')}      class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Pricing</a>
 			</nav>
 
@@ -555,6 +556,7 @@
 			<div class="flex items-center gap-6">
 				<a href="#features"     onclick={smoothTo('features')}     class="text-xs text-gray-400 hover:text-gray-700 transition-colors">Features</a>
 				<a href="#how-it-works" onclick={smoothTo('how-it-works')} class="text-xs text-gray-400 hover:text-gray-700 transition-colors">How it works</a>
+				<a href="/docs"         class="text-xs text-gray-400 hover:text-gray-700 transition-colors">Docs</a>
 				<a href="#pricing"      onclick={smoothTo('pricing')}      class="text-xs text-gray-400 hover:text-gray-700 transition-colors">Pricing</a>
 				<button 
 					onclick={() => openAuth('login')} 

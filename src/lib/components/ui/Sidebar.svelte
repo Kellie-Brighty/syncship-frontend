@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Droplets, LayoutDashboard, Globe, Settings, LogOut, CodeSquare, X, ShieldCheck, Rocket, Zap } from 'lucide-svelte';
+	import { Droplets, LayoutDashboard, Globe, Settings, LogOut, CodeSquare, X, ShieldCheck, Rocket, Zap, BookOpen } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { currentUser } from '$lib/stores/auth';
 	import LogoutModal from './LogoutModal.svelte';
@@ -44,6 +44,7 @@
 		{ name: 'Sites', href: '/sites', icon: Globe },
 		{ name: 'Deployments', href: '/deployments', icon: CodeSquare },
 		{ name: 'Settings', href: '/settings', icon: Settings },
+		{ name: 'Docs', href: '/docs', icon: BookOpen },
 		...($currentUser?.email === 'kelliebrighty@gmail.com' 
 			? [{ name: 'Admin', href: '/admin', icon: ShieldCheck }] 
 			: [])
