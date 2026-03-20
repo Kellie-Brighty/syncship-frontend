@@ -8,7 +8,7 @@
 
 	let { children }: { children: Snippet } = $props();
 
-	const PUBLIC_ROUTES = ['/', '/auth', '/privacy', '/terms'];
+	const PUBLIC_ROUTES = ['/', '/docs', '/auth', '/privacy', '/terms'];
 
 	$effect(() => {
 		const user = $currentUser;
@@ -26,7 +26,7 @@
 	});
 </script>
 
-{#if $page.url.pathname === '/' || $page.url.pathname.startsWith('/auth') || $page.url.pathname === '/privacy' || $page.url.pathname === '/terms'}
+{#if $page.url.pathname === '/' || $page.url.pathname === '/docs' || $page.url.pathname.startsWith('/auth') || $page.url.pathname === '/privacy' || $page.url.pathname === '/terms'}
 	{@render children()}
 {:else if $authLoading}
 	<div class="flex min-h-screen items-center justify-center bg-gray-100">
